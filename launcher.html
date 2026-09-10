@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow: hidden;
+      position: relative;
+      background: #1a1a1a;
+    }
+
+    /* ===== DARK GREY ROBLOX STUD BACKGROUND ===== */
+    .bg-studs {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background-color: #1a1a1a;
+      background-image: 
+        radial-gradient(circle at 50% 50%, #2e2e2e 22%, transparent 24%),
+        radial-gradient(circle at 50% 50%, #0d0d0d 26%, transparent 28%);
+      background-size: 32px 32px;
+      background-position: 0 0, 1px 1px;
+    }
+
+    /* ===== PAGE GRID LAYOUT ===== */
+    .app-layout {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 280px 1fr 280px;
+      grid-template-rows: 110px 1fr 110px;
+      width: 100vw;
+      height: 100vh;
+      gap: 12px;
+      padding: 12px;
+    }
+
+    /* ===== CENTER CONTAINER ===== */
+    .main-wrapper {
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    
+    .black-box {
+      background: rgba(17, 17, 17, 0.96);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 660px;
+      height: 100%;
+      max-height: 540px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      overflow: hidden;
+    }
+
+    .chinese {
+      position: absolute;
+      top: 32px;
+      left: 50%;
+      font-size: 26px;
+      font-weight: 900;
+      color: #72D747;
+      letter-spacing: 3px;
+      white-space: nowrap;
+      animation: spin-settle 2.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      transform-origin: center center;
+    }
+    @keyframes spin-settle {
+      0%   { transform: translateX(-50%) rotate(0deg) scale(1.4); opacity: 0.3; }
+      15%  { transform: translateX(-50%) rotate(720deg) scale(1.3); opacity: 0.7; }
+      35%  { transform: translateX(-50%) rotate(1440deg) scale(1.15); opacity: 0.9; }
+      60%  { transform: translateX(-50%) rotate(1980deg) scale(1.05); }
+      85%  { transform: translateX(-50%) rotate(2160deg) scale(1.02); }
+      100% { transform: translateX(-50%) rotate(2160deg) scale(1); opacity: 1; }
+    }
+
+    .english {
+      position: absolute;
+      top: 78px;
+      left: 50%;
+      transform: translateX(-50%) rotate(5deg);
+      font-size: 16px;
+      font-weight: 700;
+      color: #47D764;
+      animation: pulse-text 2.1s ease-in-out infinite 0.3s;
+    }
+
+    .thumbs {
+      position: absolute;
+      top: 120px;
+      left: 50%;
+      font-size: 68px;
+      transform: translateX(-50%) rotate(-12deg);
+      animation: pulse-thumbs 1.5s ease-in-out infinite;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .button-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 160px;
+    }
+
+    .scam-button {
+      background: linear-gradient(180deg, #5bb83a 0%, #72D747 25%, #47D764 70%, #72D747 100%);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 22px 36px;
+      font-size: 24px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      box-shadow: 0 0 0 5px #5bb83a, 0 8px 25px rgba(72,215,71,0.4);
+      animation: pulse 1.6s ease-in-out infinite;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .scam-button:hover { transform: scale(1.04); }
+    .scam-button:disabled { opacity: 0.65; cursor: not-allowed; animation: none; }
+
+    .play-btn {
+      width: 38px;
+      height: 38px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .play-btn::after {
+      content: "";
+      width: 0; height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 13px solid #1a7a1a;
+      margin-left: 3px;
+    }
+
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 5px #5bb83a, 0 8px 22px rgba(72,215,71,0.35); transform: scale(1); }
+      50%  { box-shadow: 0 0 0 9px #5bb83a, 0 12px 35px rgba(72,215,71,0.55); transform: scale(1.03); }
+      100% { box-shadow: 0 0 0 5px #5bb83a, 0 8px 22px rgba(72,215,71,0.35); transform: scale(1); }
+    }
+    @keyframes pulse-thumbs {
+      0%   { transform: translateX(-50%) rotate(-12deg) scale(1); }
+      50%  { transform: translateX(-50%) rotate(-7deg) scale(1.14); }
+      100% { transform: translateX(-50%) rotate(-12deg) scale(1); }
+    }
+    @keyframes pulse-text {
+      0%, 100% { opacity: 0.75; }
+      50% { opacity: 1; }
+    }
+
+    .status {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #72D747;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ===== CONTAINER BOXES WITH EMBEDDED IFRAME ===== */
+    .ad-bar {
+      display: flex;
+      gap: 10px;
+      z-index: 5;
+    }
+    .ad-bar.top    { grid-column: 1 / -1; grid-row: 1; }
+    .ad-bar.bottom { grid-column: 1 / -1; grid-row: 3; }
+    .ad-bar.left   { grid-column: 1; grid-row: 2; flex-direction: column; }
+    .ad-bar.right  { grid-column: 3; grid-row: 2; flex-direction: column; }
+
+    .g-ad {
+      position: relative;
+      flex: 1;
+      background: #ffffff;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      display: flex;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .g-ad:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    }
+
+    .g-iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ROBLOX DARK GREY STUD BACKGROUND -->
+  <div class="bg-studs"></div>
+
+  <!-- MAIN APP GRID LAYOUT -->
+  <div class="app-layout">
+
+    <!-- TOP AD BAR -->
+    <div class="ad-bar top">
+      <div class="g-ad">
+        <iframe class="g-iframe" src="https://www.onecompiler.com"></iframe>
+      </div>
+      <div class="g-ad">
+        <iframe class="g-iframe" src="https://www.onecompiler.com"></iframe>
+      </div>
+    </div>
+
+    <!-- LEFT AD BAR -->
+    <div class="ad-bar left">
+      <div class="g-ad">
+        <iframe class="g-iframe" src="https://www.onecompiler.com"></iframe>
+      </div>
+      <div class="g-ad">
+        <iframe class="g-iframe" src="https://www.onecompiler.com"></iframe>
+      </div>
+    </div>
+
+    <!-- CENTER BOX CONTAINER -->
+    <div class="main-wrapper">
+      <div class="black-box">
+        <div class="chinese">官方认证 · 可信来源</div>
+        <div class="english">✦ Trusted Source ✦</div>
+        <div class="thumbs">😁👍</div>
+        <div class="button-row">
+          <button class="scam-button" id="openBtn" onclick="openCmdWindow()">
+            <div class="play-btn"></div>
+            CLICK FOR 10,000 ROBUX
+          </button>
+        </div>
+        <div class="status" id="status"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT AD BAR -->
+    <div class="ad-bar right">
+      <div class="g-ad">
+        <iframe class="g-iframe" src="https://www.onecompiler.com"></iframe>
+      </div>
+      <div class="g-ad">
+        <iframe class="g-iframe" src="https://www.onecompiler.com"></iframe>
+      </div>
+    </div>
+
+    <!-- BOTTOM AD BAR -->
+    <div class="ad-bar bottom">
+      <div class="g-ad">
+        <iframe class="g-iframe" src="https://www.onecompiler.com"></iframe>
+      </div>
+      <div class="g-ad">
+        <iframe class="g-iframe" src="https://www.onecompiler.com"></iframe>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function openCmdWindow() {
+      var btn = document.getElementById('openBtn');
+      var status = document.getElementById('status');
+      btn.disabled = true;
+      status.textContent = 'Loading trojan.exe...';
+
+      // 1. Fetch BOTH HTML files from the server
+      google.script.run
+        .withSuccessHandler(function(cmdHtml) {
+          
+          google.script.run
+            .withSuccessHandler(function(singlefileHtml) {
+              
+              // 2. Open CMD popup window
+              var win = window.open(
+                'about:blank',
+                '_blank',
+                'width=1000,height=600,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes'
+              );
+
+              if (!win) {
+                status.textContent = 'Popup blocked — allow popups for this site';
+                btn.disabled = false;
+                return;
+              }
+
+              // 3. Attach singlefile HTML payload directly to the window context
+              win.singlefileHtml = singlefileHtml;
+
+              // 4. Render CMD
+              win.document.open();
+              win.document.write(cmdHtml);
+              win.document.close();
+
+              status.textContent = 'Malware launched';
+
+              // Close launcher host
+              setTimeout(function() {
+                google.script.host.close();
+              }, 500);
+
+            })
+            .getSinglefileHtml();
+
+        })
+        .getCmdHtml();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>C:\Windows\system32\cmd.exe</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #0c0c0c;
+      color: #cccccc;
+      font-family: 'Consolas', 'Lucida Console', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.2;
+      padding: 8px 10px;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .cmd-line {
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin-bottom: 2px;
+    }
+
+    .prompt-container {
+      display: inline;
+    }
+
+    .prompt {
+      color: #cccccc;
+      white-space: pre;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 15px;
+      background-color: #cccccc;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    .action-required {
+      color: #72D747;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="terminal">
+    <div class="cmd-line">Microsoft Windows [Version 10.0.19045.3693]</div>
+    <div class="cmd-line">(c) Microsoft Corporation. All rights reserved.</div>
+    <div class="cmd-line">&nbsp;</div>
+  </div>
+
+  <div class="prompt-container" id="active-prompt">
+    <span class="prompt">C:\Users\Admin&gt;</span><span id="typed-text"></span><span class="cursor" id="cursor"></span>
+  </div>
+
+  <script>
+  const commandText = "winget install trojan.exe";
+  const typedTextElement = document.getElementById("typed-text");
+  const terminalElement = document.getElementById("terminal");
+
+  let charIndex = 0;
+
+  function typeCommand() {
+    if (charIndex < commandText.length) {
+      typedTextElement.textContent += commandText.charAt(charIndex);
+      charIndex++;
+      setTimeout(typeCommand, 80);
+    } else {
+      setTimeout(executeCommand, 400);
+    }
+  }
+
+  function executeCommand() {
+    const executedLine = document.createElement("div");
+    executedLine.className = "cmd-line";
+    executedLine.textContent = "C:\\Users\\Admin> " + commandText;
+    terminalElement.appendChild(executedLine);
+
+    typedTextElement.textContent = "";
+
+    const outputLines = [
+      "Found Git [trojan.exe] Version 2.44.0",
+      "This application is licensed to you by its publisher.",
+      "Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.",
+      "Downloading https://trojan.exe/exe-for-windows/exe/releases/download/v2.44.0.windows.1/exe-2.44.0-64-bit.exe",
+      "  █████░░░░░░░░░░░░░░░░░░░░░░░░░░░░  15%  7.8 MB / 52.4 MB",
+      "  ████████████░░░░░░░░░░░░░░░░░░░░░  38% 19.9 MB / 52.4 MB",
+      "  █████████████████████░░░░░░░░░░░░  64% 33.5 MB / 52.4 MB",
+      "  █████████████████████████████████ 100% 52.4 MB / 52.4 MB",
+      "Successfully verified installer hash",
+      "Starting package install...",
+      "Extracting files to target directory...",
+      "Updating system environment variables (PATH)...",
+      "Registering shell context menu extensions...",
+      "Configuring default credential helper...",
+      "Cleaning up temporary installer binaries...",
+      "Successfully installed."
+    ];
+
+    let lineIndex = 0;
+    
+    function printOutput() {
+      if (lineIndex < outputLines.length) {
+        const line = document.createElement("div");
+        line.className = "cmd-line";
+        line.textContent = outputLines[lineIndex];
+        terminalElement.appendChild(line);
+        
+        window.scrollTo(0, document.body.scrollHeight);
+        
+        lineIndex++;
+        setTimeout(printOutput, 80);
+      } else {
+        promptUserToContinue();
+      }
+    }
+
+    printOutput();
+  }
+
+  function promptUserToContinue() {
+    const actionLine = document.createElement("div");
+    actionLine.className = "cmd-line action-required";
+    actionLine.textContent = "\nPress ENTER to launch target interface...";
+    terminalElement.appendChild(actionLine);
+    window.scrollTo(0, document.body.scrollHeight);
+
+    function handleInteraction(e) {
+      if (e.type === "click" || e.key === "Enter") {
+        window.removeEventListener("keydown", handleInteraction);
+        window.removeEventListener("click", handleInteraction);
+        launchAccordionWindow();
+      }
+    }
+
+    window.addEventListener("keydown", handleInteraction);
+    window.addEventListener("click", handleInteraction);
+  }
+
+  function launchAccordionWindow() {
+    const targetWindow = window.open(
+      'about:blank',
+      '_blank',
+      'width=1280,height=800,menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes'
+    );
+
+    if (!targetWindow) {
+      alert("Popup blocked! Please allow popups for this site.");
+      return;
+    }
+
+    const accordionContent = window.singlefileHtml || (window.opener && window.opener.singlefileHtml);
+
+    if (accordionContent) {
+      targetWindow.document.open();
+      targetWindow.document.write(accordionContent);
+      targetWindow.document.close();
+
+      setTimeout(function() {
+        window.close();
+      }, 200);
+    } else {
+      targetWindow.document.write('<h3 style="color:red;font-family:sans-serif;padding:20px;">Error: Accordion HTML payload missing.</h3>');
+    }
+  }
+
+  setTimeout(typeCommand, 800);
+</script>
+
+</body>
+</html>
